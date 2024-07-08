@@ -1,6 +1,7 @@
 import { Tldraw, track, useEditor } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { useYjsStore } from './useYjsStore'
+import { MeshGrid } from './MeshGrid'
 
 const HOST_URL =
 	import.meta.env.MODE === 'development'
@@ -8,20 +9,47 @@ const HOST_URL =
 		: 'wss://demos.yjs.dev'
 
 export default function YjsExample() {
-	const store = useYjsStore({
+	const store1 = useYjsStore({
 		roomId: 'example17',
 		hostUrl: HOST_URL,
 	})
 
+	const store2 = useYjsStore({
+		roomId: 'example18',
+		hostUrl: HOST_URL,
+	})
+
 	return (
-		<div className="tldraw__editor">
-			<Tldraw
-				autoFocus
-				store={store}
-				components={{
-					SharePanel: NameEditor,
-				}}
-			/>
+		<div
+			style={{
+				display: 'grid',
+				gridTemplateRows: 'repeat(2, 1fr)',
+				height: '100vh',
+			}}
+		>
+			<div className="tldraw__editor">
+				<Tldraw
+					key="1"
+					autoFocus
+					store={store1}
+					components={{
+						SharePanel: () => <NameEditor key="1" />,
+						Grid: MeshGrid,
+					}}
+				/>
+			</div>
+
+			<div className="tldraw__editor">
+				<Tldraw
+					key="2"
+					autoFocus
+					store={store2}
+					components={{
+						SharePanel: () => <NameEditor key="2" />,
+						Grid: MeshGrid,
+					}}
+				/>
+			</div>
 		</div>
 	)
 }
